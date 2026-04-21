@@ -48,21 +48,18 @@ using (var scope = app.Services.CreateScope())
     try {
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        // This drops the whole DB and resets it when identities/relationships are created
-        // Doing this so that EF migrations do not have to be generated
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        await context.Database.EnsureCreatedAsync();
         app.Logger.LogInformation("Database verified and seeded successfully.");
 
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-        if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+        if (!await roleManager.RoleExistsAsync("Admin"))
         {
-            roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
-        if (userManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
+        if (await userManager.FindByNameAsync("admin") == null)
         {
             var adminUser = new ApplicationUser
             {
@@ -70,10 +67,17 @@ using (var scope = app.Services.CreateScope())
                 Email = "admin@example.com",
                 EmailConfirmed = true
             };
-            var result = userManager.CreateAsync(adminUser, "admin").GetAwaiter().GetResult();
+            var result = await userManager.CreateAsync(adminUser, "admin");
             if (result.Succeeded)
             {
-                userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+            else 
+            {
+                foreach (var error in result.Errors) 
+                {
+                    app.Logger.LogError("Error creating admin user: {Error}", error.Description);
+                }
             }
         }
     } catch (Exception ex) {
