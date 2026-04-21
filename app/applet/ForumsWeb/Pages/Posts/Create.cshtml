@@ -1,0 +1,30 @@
+@page
+@model ForumsWeb.Pages.Posts.CreateModel
+@{
+    ViewData["Title"] = "Create Post";
+}
+
+<div style="margin-bottom: 1.5rem;">
+    <a asp-page="/Posts/Index" asp-route-forumId="@Model.ForumId">&larr; Back to Posts</a>
+</div>
+
+<div class="card">
+    <h1 style="margin-top: 0;">Create a New Post</h1>
+    <hr />
+    <form method="post">
+        <input type="hidden" asp-for="Post.ForumId" value="@Model.ForumId" />
+        <div class="form-group">
+            <label asp-for="Post.Title">Title</label>
+            <input asp-for="Post.Title" class="form-control" placeholder="Enter a descriptive title" />
+            <span asp-validation-for="Post.Title" style="color: #dc2626; font-size: 0.875rem;"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Post.Content">Message Content</label>
+            <textarea asp-for="Post.Content" rows="6" class="form-control" placeholder="What's on your mind?"></textarea>
+            <span asp-validation-for="Post.Content" style="color: #dc2626; font-size: 0.875rem;"></span>
+        </div>
+        <div style="margin-top: 1.5rem;">
+            <button type="submit" class="btn">Submit Post</button>
+        </div>
+    </form>
+</div>

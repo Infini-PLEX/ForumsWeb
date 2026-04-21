@@ -1,0 +1,27 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Community Forums";
+}
+
+<h1 style="margin-top: 0;">Community Forums</h1>
+<p style="color: #64748b; margin-bottom: 2rem;">Welcome to our discussion boards. Select a category below to start reading or contributing.</p>
+
+@if (Model.Forums != null && Model.Forums.Any())
+{
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        @foreach (var forum in Model.Forums)
+        {
+            <div class="card">
+                <h2 style="margin-top: 0;"><a asp-page="/Posts/Index" asp-route-forumId="@forum.Id">@forum.Title</a></h2>
+                <p style="margin-bottom: 0; color: #475569;">@forum.Description</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="card">
+        <p>No forums are currently available.</p>
+    </div>
+}

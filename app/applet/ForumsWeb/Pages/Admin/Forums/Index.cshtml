@@ -1,0 +1,38 @@
+@page
+@model ForumsWeb.Pages.Admin.Forums.IndexModel
+@{
+    ViewData["Title"] = "Manage Forums";
+}
+
+<div style="margin-bottom: 1.5rem;">
+    <a asp-page="/Admin/Index">&larr; Back to Admin Panel</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin-top: 0;">Manage Forums</h1>
+    <a asp-page="./Create" class="btn">Create New Forum</a>
+</div>
+<hr />
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+    <thead>
+        <tr style="background: #f1f5f9; text-align: left;">
+            <th style="padding: 1rem; border: 1px solid var(--border);">Title</th>
+            <th style="padding: 1rem; border: 1px solid var(--border);">Description</th>
+            <th style="padding: 1rem; border: 1px solid var(--border); width: 150px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Forum) {
+            <tr>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@item.Title</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@item.Description</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" onsubmit="return confirm('Are you sure you want to delete this forum? All posts and replies inside will be deleted too.');">
+                        <button type="submit" class="btn" style="background: #ef4444;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

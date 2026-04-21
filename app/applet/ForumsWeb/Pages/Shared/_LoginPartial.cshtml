@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Identity
+@using ForumsWeb.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1.5rem; align-items: center;">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <li>
+                <a asp-page="/Admin/Index" style="color: white; font-weight: normal;">Admin Panel</a>
+            </li>
+        }
+        <li>
+            <span style="color: rgba(255,255,255,0.8);">Hello @User.Identity?.Name!</span>
+        </li>
+        <li>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-size: 1rem; padding: 0;">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Register" style="color: white; font-weight: normal;">Register</a>
+        </li>
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Login" style="color: white; font-weight: normal;">Login</a>
+        </li>
+    }
+</ul>

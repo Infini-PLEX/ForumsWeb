@@ -1,0 +1,30 @@
+@page
+@model ForumsWeb.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div style="margin-bottom: 1.5rem;">
+    <a asp-page="/Index">&larr; Back to Forums</a>
+</div>
+
+<h1>Admin Panel</h1>
+<hr />
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card">
+        <h3>System Statistics</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);"><strong>Total Users:</strong> @Model.UserCount</li>
+            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);"><strong>Total Forums:</strong> @Model.ForumCount</li>
+            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);"><strong>Total Posts:</strong> @Model.PostCount</li>
+            <li style="padding: 0.5rem 0;"><strong>Total Replies:</strong> @Model.ReplyCount</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Manage Categories</h3>
+        <p>Control the forum sections.</p>
+        <a asp-page="/Admin/Forums/Index" class="btn">Manage Forums</a>
+    </div>
+</div>
