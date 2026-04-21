@@ -1,0 +1,57 @@
+@page
+@model ForumsWeb.Pages.Admin.Users.IndexModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div style="margin-bottom: 1.5rem;">
+    <a asp-page="/Admin/Index">&larr; Back to Admin Panel</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin-top: 0;">Manage Users</h1>
+</div>
+<hr />
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+    <thead>
+        <tr style="background: #f1f5f9; text-align: left;">
+            <th style="padding: 1rem; border: 1px solid var(--border);">Email/Username</th>
+            <th style="padding: 1rem; border: 1px solid var(--border);">Registered</th>
+            <th style="padding: 1rem; border: 1px solid var(--border);">Status</th>
+            <th style="padding: 1rem; border: 1px solid var(--border); width: 180px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UsersList) {
+            <tr>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@user.Email</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@user.RegisteredAt.ToString("g")</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">
+                    @if (user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow) {
+                        <span style="color: #dc2626; font-weight: bold;">Banned</span>
+                    } else {
+                        <span style="color: #16a34a; font-weight: bold;">Active</span>
+                    }
+                </td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">
+                    @if (user.Email != "admin@example.com") {
+                        <div style="display: flex; gap: 0.5rem;">
+                            @if (user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow) {
+                                <form method="post" asp-page-handler="Unban" asp-route-id="@user.Id">
+                                    <button type="submit" class="btn" style="background: #16a34a;">Unban</button>
+                                </form>
+                            } else {
+                                <form method="post" asp-page-handler="Ban" asp-route-id="@user.Id" onsubmit="return confirm('Are you sure you want to ban @user.Email? They will not be able to login.');">
+                                    <button type="submit" class="btn" style="background: #ef4444;">Ban User</button>
+                                </form>
+                            }
+                        </div>
+                    } else {
+                        <span style="color: #64748b; font-style: italic;">Super Admin</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

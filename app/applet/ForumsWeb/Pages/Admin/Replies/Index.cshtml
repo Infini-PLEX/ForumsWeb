@@ -1,0 +1,45 @@
+@page
+@model ForumsWeb.Pages.Admin.Replies.IndexModel
+@{
+    ViewData["Title"] = "Manage Replies";
+}
+
+<div style="margin-bottom: 1.5rem;">
+    <a asp-page="/Admin/Index">&larr; Back to Admin Panel</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin-top: 0;">Manage Replies</h1>
+</div>
+<hr />
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+    <thead>
+        <tr style="background: #f1f5f9; text-align: left;">
+            <th style="padding: 1rem; border: 1px solid var(--border);">In Post</th>
+            <th style="padding: 1rem; border: 1px solid var(--border);">Content / Author</th>
+            <th style="padding: 1rem; border: 1px solid var(--border);">Created</th>
+            <th style="padding: 1rem; border: 1px solid var(--border); width: 140px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Replies) {
+            <tr>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@item.Post?.Title</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">
+                    <div style="max-height: 80px; overflow: hidden; text-overflow: ellipsis; white-space: pre-wrap;">@item.Content</div>
+                    <small style="color: #64748b; font-weight: bold;">— @item.User?.Email</small>
+                </td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">@item.CreatedAt.ToString("MMM dd, yyyy")</td>
+                <td style="padding: 1rem; border: 1px solid var(--border);">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a asp-page="/Posts/Details" asp-route-id="@item.PostId" class="btn" style="background: #64748b;">View</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" onsubmit="return confirm('Delete this reply completely?');">
+                            <button type="submit" class="btn" style="background: #ef4444;">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

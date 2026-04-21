@@ -23,8 +23,12 @@
     </div>
 
     <div class="card">
-        <h3>Manage Categories</h3>
-        <p>Control the forum sections.</p>
-        <a asp-page="/Admin/Forums/Index" class="btn">Manage Forums</a>
+        <h3>Admin Tools</h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+            <li><a asp-page="/Admin/Users/Index" class="btn" style="display: block; text-align: center; background: #475569;">Manage Users (Bans)</a></li>
+            <li><a asp-page="/Admin/Forums/Index" class="btn" style="display: block; text-align: center;">Manage Forums</a></li>
+            <li><a asp-page="/Admin/Posts/Index" class="btn" style="display: block; text-align: center; background: #0ea5e9;">Manage Posts</a></li>
+            <li><a asp-page="/Admin/Replies/Index" class="btn" style="display: block; text-align: center; background: #64748b;">Manage Replies</a></li>
+        </ul>
     </div>
 </div>
